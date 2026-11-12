@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f7f4">
+<title>Don't Get Distracted</title>
+<style>
+:root{--bg:#f5f7f4;--card:#fff;--ink:#171b19;--muted:#78817b;--green:#2e9b62;--pale:#e7f4eb;--line:#e8ece8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer;border:0}
+.wrap{max-width:680px;margin:auto;padding:22px 20px 42px}
+.top{display:flex;justify-content:space-between;align-items:center;margin:6px 0 28px}
+.brand{font-weight:800;letter-spacing:-.7px;font-size:19px}.brand span{color:var(--green)}
+.pill{background:var(--pale);color:#267c4e;border-radius:30px;padding:8px 12px;font-size:12px;font-weight:700}
+h1{font-size:34px;line-height:1.08;letter-spacing:-1.3px;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 22px;line-height:1.5}
+.timer{background:#171b19;color:white;border-radius:25px;padding:24px;margin:20px 0;box-shadow:0 12px 30px #14231b18}
+.timerhead{display:flex;justify-content:space-between;align-items:center;color:#cbd2cd;font-size:13px}
+.mode{font-size:12px;background:#303833;border-radius:30px;padding:7px 11px}
+.time{font-size:64px;font-weight:750;letter-spacing:-2px;text-align:center;margin:22px 0 16px;font-variant-numeric:tabular-nums}
+.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.primary{background:var(--green);color:white;padding:13px 25px;border-radius:30px;font-weight:700}
+.secondary{background:#303833;color:white;padding:13px 20px;border-radius:30px;font-weight:650}
+.modes{display:flex;gap:8px;justify-content:center;margin-top:18px}
+.modes button{background:#303833;color:#cbd2cd;padding:8px 13px;border-radius:20px;font-size:12px}
+.modes button.active{background:white;color:#171b19}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:17px}
+.stat small{color:var(--muted);font-size:12px}.stat strong{display:block;font-size:25px;margin-top:7px;letter-spacing:-.6px}
+.section{display:flex;justify-content:space-between;align-items:center;margin:27px 0 12px}
+.section h2{font-size:18px;margin:0;letter-spacing:-.4px}
+.addrow{display:flex;gap:8px}
+.addrow input{min-width:0;flex:1;border:1px solid var(--line);border-radius:13px;background:white;padding:13px 14px;outline:none}
+.addrow input:focus{border-color:var(--green)}
+.addrow button{background:var(--ink);color:white;border-radius:13px;padding:0 18px;font-weight:700}
+.task{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}
+.task:last-child{border-bottom:0}
+.task input{width:19px;height:19px;accent-color:var(--green)}
+.task.done span{text-decoration:line-through;color:#9aa29c}
+.empty{color:var(--muted);font-size:14px;padding:14px 0}
+.progress{height:9px;background:#edf1ed;border-radius:10px;overflow:hidden;margin-top:12px}
+.progress div{height:100%;width:0;background:var(--green);border-radius:10px;transition:width .2s}
+.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:18px}
+.welcome{min-height:75vh;display:flex;flex-direction:column;justify-content:center;text-align:center;align-items:center}
+.symbol{width:84px;height:84px;border:2px solid var(--ink);border-radius:27px;display:grid;place-items:center;font-size:38px;margin-bottom:28px}
+.welcome h1{max-width:390px;font-size:43px}.welcome .sub{max-width:320px;margin:12px auto 28px}
+.welcome button{width:100%;max-width:340px;padding:16px;border-radius:30px;background:var(--ink);color:white;font-weight:700}
+.hidden{display:none!important}
+@media(min-width:600px){.wrap{padding-top:34px}.time{font-size:76px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section id="welcome" class="welcome">
+    <div class="symbol">✳</div>
+    <h1>Don't get<br> distracted.</h1>
+    <p class="sub">Less scrolling. More doing. Make a little progress, one focus session at a time.</p>
+    <button id="startApp">Get started →</button>
+    <p class="note">Your tasks and progress stay saved on this device.</p>
+  </section>
+  <section id="app" class="hidden">
+    <header class="top"><div class="brand">don't get <span>distracted.</span></div><div class="pill">FOCUS MODE</div></header>
+    <h1>Make today<br>count.</h1>
+    <p class="sub">Small steps. Full attention.</p>
+    <section class="timer">
+      <div class="timerhead"><span>YOUR FOCUS SESSION</span><span class="mode" id="modeLabel">FOCUS · 25 MIN</span></div>
+      <div class="time" id="clock">25:00</div>
+      <div class="controls"><button class="primary" id="toggle">Start focus</button><button class="secondary" id="reset">Reset</button></div>
+      <div class="modes"><button class="active" data-mode="focus">Focus 25</button><button data-mode="short">Break 5</button><button data-mode="long">Break 15</button></div>
+    </section>
+    <div class="grid">
+      <div class="stat"><small>FOCUS SESSIONS TODAY</small><strong id="sessions">0</strong></div>
+      <div class="stat"><small>COMPLETED TASKS</small><strong id="completed">0</strong></div>
+    </div>
+    <div class="section"><h2>Today's progress</h2><span class="pill" id="progressText">0%</span></div>
+    <div class="panel"><div style="display:flex;justify-content:space-between;font-size:13px"><span>Keep your momentum</span><strong id="taskCount">0 / 0</strong></div><div class="progress"><div id="progressBar"></div></div></div>
+    <div class="section"><h2>Today's priorities</h2><span style="font-size:12px;color:var(--muted)">ONE THING AT A TIME</span></div>
+    <div class="addrow"><input id="taskInput" maxlength="70" placeholder="What do you need to do?"><button id="addTask">Add</button></div>
+    <div class="panel" style="margin-top:12px" id="taskList"><div class="empty">Add one small task to get started.</div></div>
+    <p class="note">Tip: Put your iPad on Do Not Disturb, choose one task, and start the timer. This starter version does not block other apps automatically.</p>
+  </section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const today=()=>new Date().toISOString().slice(0,10);
+let data=JSON.parse(localStorage.getItem('dgd-data')||'{}');
+if(data.date!==today()) data={date:today(),sessions:0,tasks:[]};
+data.sessions=data.sessions||0;data.tasks=data.tasks||[];
+let mode='focus',remaining=1500,running=false,interval=null;
+const durations={focus:1500,short:300,long:900};
+function save(){localStorage.setItem('dgd-data',JSON.stringify(data));render()}
+function showApp(){ $('welcome').classList.add('hidden');$('app').classList.remove('hidden');localStorage.setItem('dgd-seen','1');render()}
+if(localStorage.getItem('dgd-seen'))showApp();
+$('startApp').onclick=showApp;
+function format(n){return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')}
+function updateClock(){$('clock').textContent=format(remaining);$('modeLabel').textContent=(mode==='focus'?'FOCUS':mode==='short'?'SHORT BREAK':'LONG BREAK')+' · '+durations[mode]/60+' MIN'}
+function stop(){running=false;clearInterval(interval);$('toggle').textContent='Start focus'}
+$('toggle').onclick=()=>{if(running){stop();return}running=true;$('toggle').textContent='Pause';interval=setInterval(()=>{remaining--;updateClock();if(remaining<=0){stop();if(mode==='focus'){data.sessions++;save();alert('Focus session complete. Take a short break!')}else{alert('Break complete. Ready for another session?')}remaining=durations[mode];updateClock()}},1000)};
+$('reset').onclick=()=>{stop();remaining=durations[mode];updateClock()};
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{stop();mode=b.dataset.mode;remaining=durations[mode];document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));updateClock()});
+function render(){
+$('sessions').textContent=data.sessions;
+const done=data.tasks.filter(t=>t.done).length,total=data.tasks.length,pct=total?Math.round(done/total*100):0;
+$('completed').textContent=done;$('taskCount').textContent=done+' / '+total;$('progressText').textContent=pct+'%';$('progressBar').style.width=pct+'%';
+$('taskList').innerHTML='';
+if(!total){$('taskList').innerHTML='<div class="empty">Add one small task to get started.</div>';return}
+data.tasks.forEach((t,i)=>{const row=document.createElement('label');row.className='task'+(t.done?' done':'');const cb=document.createElement('input');cb.type='checkbox';cb.checked=t.done;cb.onchange=()=>{data.tasks[i].done=cb.checked;save()};const span=document.createElement('span');span.textContent=t.text;row.append(cb,span);$('taskList').append(row)});
+}
+function add(){const v=$('taskInput').value.trim();if(!v)return;data.tasks.push({text:v,done:false});$('taskInput').value='';save()}
+$('addTask').onclick=add;$('taskInput').addEventListener('keydown',e=>{if(e.key==='Enter')add()});
+updateClock();render();
+</script>
+</body>
+</html>
